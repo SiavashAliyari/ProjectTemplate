@@ -7,17 +7,27 @@ project "Core"
 
    files { "Source/**.h", "Source/**.cpp" }
 
-   includedirs
-   {
-      "Source"
-   }
+    includedirs
+    {
+        "Source",
+        "%{IncludeDir.GLFW}"
+    }
 
+    libdirs
+    {
+        "%{LibDir.GLFW}"
+    }
+
+    links
+    {
+        "glfw3"
+    }
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")
    objdir ("../Binaries/Intermediates/" .. OutputDir .. "/%{prj.name}")
 
    filter "system:windows"
        systemversion "latest"
-       defines { }
+       defines { "GLFW_INCLUDE_NONE" }
 
    filter "configurations:Debug"
        defines { "DEBUG" }
