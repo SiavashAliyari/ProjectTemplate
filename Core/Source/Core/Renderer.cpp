@@ -7,30 +7,40 @@
 #include <string>
 
 namespace Core {
-	Renderer::Renderer() : m_VAO(0), m_VBO(0), m_ShaderProgram(0) {}
+	Renderer::Renderer() : m_VAO(0), m_VBO(0), m_ShaderProgram(0),m_IBO(0) {}
 	Renderer::~Renderer() {
 		glDeleteVertexArrays(1, &m_VAO);
 		glDeleteBuffers(1, &m_VBO);
 		glDeleteProgram(m_ShaderProgram);
 	}
 	void Renderer::Init() {
-		float vertices[9] = {
+		float vertices[] = {
 		-0.5f, -0.5f, 0.0f,
 		 0.5f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f
+		 0.5f,  0.5f, 0.0f,
+		-0.5f,  0.5f, 0.0f
 		};
-		// VBO 
-		glGenBuffers(1, &m_VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 9, vertices, GL_STATIC_DRAW);
+		unsigned int indecies[] = {
+			0,1,2,
+			2,3,0
+		};
 		//VAO
 		glGenVertexArrays(1, &m_VAO);
 		glBindVertexArray(m_VAO);
-		//idk yet
+		// VBO 
+		glGenBuffers(1, &m_VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 12, vertices, GL_STATIC_DRAW);
+
+		//tells opengl how to interpt the data on VBO
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
+		//index buffer 
+		glGenBuffers(1, &m_IBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,m_IBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 6, indecies, GL_STATIC_DRAW); 
+
 		//shaders
-	
 		Renderer::ShaderProgramSources source=ParseShader("../Core/res/Shaders/Basic.shader");
 		m_ShaderProgram=CreateShader(source.VertexSource, source.FragmentSource);
 		std::cout << "Renderer initialized.\n";
@@ -42,7 +52,8 @@ namespace Core {
 	void Renderer::Draw() {
 		glUseProgram(m_ShaderProgram);	
 		glBindVertexArray(m_VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
 	}
 	unsigned int Renderer::CreateShader(const std::string& vertexShader,const std::string& fragmentShader) {

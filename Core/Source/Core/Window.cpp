@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <stdexcept>
 #include <iostream>
+#include "GLDebug.h"
 
 
 namespace Core {
@@ -20,12 +21,14 @@ namespace Core {
         }
 
         glfwMakeContextCurrent(m_Window);
-
+ 
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
             glfwDestroyWindow(m_Window);
             glfwTerminate();
             throw std::runtime_error("Failed to initialize GLAD!");
         }
+        //Enable debugging for Opengl
+        Core::EnableGLDebugOutput();
         std::cout<< "OpenGl version is: " << glGetString(GL_VERSION) << std::endl;
     }
 
