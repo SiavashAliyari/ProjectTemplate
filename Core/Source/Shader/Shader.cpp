@@ -80,5 +80,8 @@ namespace Core {
 
 		return program;
 	}
+	void Shader::DeleteShader(unsigned int& shaderProgram) {
+		glDeleteProgram(shaderProgram);
+	}
 
 }

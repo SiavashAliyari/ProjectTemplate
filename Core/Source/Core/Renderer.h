@@ -6,17 +6,15 @@ namespace Core {
 	public:
 		Renderer();
 		~Renderer();
-		unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
-		void Init();
+		void Init(unsigned int& shaderProgram);
 		void Clear();
-		void Draw();
+		void Draw(unsigned int& shaderProgram);
 		
 	private:
 		unsigned int m_VAO;
 		unsigned int m_VBO;
 		unsigned int m_IBO;
 
-		unsigned int m_ShaderProgram;
 		
 	};
 }

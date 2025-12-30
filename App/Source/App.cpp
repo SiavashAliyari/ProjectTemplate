@@ -9,15 +9,17 @@ int main()
     try
     {
         std::cout << std::filesystem::current_path() << std::endl;
-        Core::Window window(1280, 720, "GLFW Test");
+        Core::Window window(1280, 720, "2d Engine");
         Core::Renderer renderer;
-        renderer.Init();
+        unsigned int shaderProgram=0;
+
+        renderer.Init(shaderProgram);
 
 
         while (!window.ShouldClose())
         {
             renderer.Clear();
-            renderer.Draw();
+            renderer.Draw(shaderProgram);
 
             window.PollEvents();
             window.SwapBuffers();

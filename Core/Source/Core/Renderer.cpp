@@ -8,13 +8,14 @@
 #include <Shader/Shader.h>
 
 namespace Core {
-	Renderer::Renderer() : m_VAO(0), m_VBO(0), m_ShaderProgram(0),m_IBO(0) {}
+	Renderer::Renderer() : m_VAO(0), m_VBO(0),m_IBO(0) {}
 	Renderer::~Renderer() {
+		
+		//should be moved to other files 
 		glDeleteVertexArrays(1, &m_VAO);
 		glDeleteBuffers(1, &m_VBO);
-		glDeleteProgram(m_ShaderProgram);
 	}
-	void Renderer::Init() {
+	void Renderer::Init(unsigned int& shaderProgram) {
 		float vertices[] = {
 		-0.5f, -0.5f, 0.0f,
 		 0.5f, -0.5f, 0.0f,
@@ -43,15 +44,15 @@ namespace Core {
 
 		//shaders
 		Shader::ShaderProgramSources source= Shader::ParseShader("../Core/res/Shaders/Basic.shader");
-		m_ShaderProgram=Shader::CreateShader(source.VertexSource, source.FragmentSource);
+		shaderProgram =Shader::CreateShader(source.VertexSource, source.FragmentSource);
 		std::cout << "Renderer initialized.\n";
 	}
 	void Renderer::Clear() {
 		glClearColor(0.1f, 0.1f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
-	void Renderer::Draw() {
-		glUseProgram(m_ShaderProgram);	
+	void Renderer::Draw(unsigned int& shaderProgram) {
+		glUseProgram(shaderProgram);
 		glBindVertexArray(m_VAO);
 		//glDrawArrays(GL_TRIANGLES, 0, 3);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
