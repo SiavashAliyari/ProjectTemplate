@@ -30,6 +30,7 @@ namespace Core {
             glfwTerminate();
             throw std::runtime_error("Failed to initialize GLAD!");
         }
+        glfwSwapInterval(1);
         //Enable debugging for Opengl
         Core::EnableGLDebugOutput();
         std::cout<< "OpenGl version is: " << glGetString(GL_VERSION) << std::endl;

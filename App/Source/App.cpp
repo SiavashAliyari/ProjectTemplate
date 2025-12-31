@@ -2,6 +2,9 @@
 #include <Core/Window.h>
 #include <iostream>
 #include "Core/Renderer.h"
+#include "Render/VertexBuffer.h"
+#include "Render/IndexBuffer.h"
+
 #include <filesystem>
 
 int main()
@@ -11,15 +14,27 @@ int main()
         std::cout << std::filesystem::current_path() << std::endl;
         Core::Window window(1280, 720, "2d Engine");
         Core::Renderer renderer;
-        unsigned int shaderProgram=0;
+        renderer.Init();
+     
+        float vertices[] = {
+        -0.5f, -0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+         0.5f,  0.5f, 0.0f,
+        -0.5f,  0.5f, 0.0f
+        };
+        unsigned int indecies[] = {
+            0,1,2,
+            2,3,0
+        };
 
-        renderer.Init(shaderProgram);
+        Core::VertexBuffer vbo(vertices, sizeof(float) * 12);
+        Core::IndexBuffer ibo(indecies, 6);
 
 
         while (!window.ShouldClose())
         {
             renderer.Clear();
-            renderer.Draw(shaderProgram);
+            renderer.Draw();
 
             window.PollEvents();
             window.SwapBuffers();

@@ -6,9 +6,9 @@ namespace Core {
 	public:
 		Renderer();
 		~Renderer();
-		void Init(unsigned int& shaderProgram);
+		void Init();
 		void Clear();
-		void Draw(unsigned int& shaderProgram);
+		void Draw();
 		
 	private:
 		unsigned int m_VAO;
